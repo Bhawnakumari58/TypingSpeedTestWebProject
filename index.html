@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypingSpeedTest</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="mainDiv">
+        <div class="centerDiv">
+            <h1>Welcome To Typing Speed Test</h1>
+            <h2 id="msg"> </h2>
+            <br>
+            <textarea id="myWords" cols="100" rows="10" placeholder="Type here"></textarea>
+            <br>
+            <button id="btn" class="mainbtn">Start</button>
+        </div>
+    </div>
+</body>
+    <script>
+        const setOfWords=["hi my name is bhawna kumari and i am a student",
+             "this is typing speed test website hope you all are having fun",
+             "if you want the source code of this website then it is on my github profile",
+             "this website will tell you words typed by you per minute and correct and wrong word count"];
+
+const msg= document.getElementById('msg');
+const typeWord= document.getElementById('myWords');
+const btn= document.getElementById("btn");
+let startTime,endTime;
+
+const playGame = () => {
+         let randomNumber = Math.floor(Math.random()*setOfWords.length);
+          msg.innerText=setOfWords[randomNumber];
+          let date = new Date();
+          startTime = date.getTime();
+          btn.innerText = "Done";
+}
+
+const wordCounter = (str) => {
+    let response = str.split(" ").length;
+    return response;
+}
+
+const endPlay = () => {
+    let date = new Date();
+    endTime = date.getTime();
+    let totalTime = ((endTime - startTime)/1000);
+    console.log(totalTime);
+    
+    let totalstr = typeWord.value;
+    let wordCount = wordCounter(totalstr);
+
+    let speed = Math.round((wordCount/totalTime)*60);
+
+    let finalmsg = " You typed total at " +speed+ " words per minutes. ";
+    finalmsg+= compareWords(msg.innerText, totalstr);
+
+    msg.innerText = finalmsg;
+}
+
+const compareWords = (str1,str2) =>{
+    let word1 = str1.split(" ");
+    let word2 = str2.split(" ");
+    let cnt=0;
+
+    word1.forEach(function(item, index){
+        if(item== word2[index]){
+            cnt++;
+        }
+    })
+
+    let errorWord = ( word1.length - cnt);
+    return (cnt + " correct out of "+word1.length + " words and the total number of errors are "+ errorWord + ".");
+}
+
+btn.addEventListener('click', function(){
+         if(this.innerText== 'Start'){
+             typeWord.disabled = false;
+             playGame();
+         }
+         else if (this.innerText == "Done"){
+              typeWord.disabled = true;
+              btn.innerText = "Start";
+              endPlay();
+         }
+})
+    </script>
+
+
+</html>
